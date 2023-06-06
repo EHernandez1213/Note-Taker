@@ -6,12 +6,12 @@ const {
   writeToFile,
 } = require('../helpers/fsUtils');
 
-// GET Route for retrieving all the tips
+
 tips.get('/', (req, res) => {
   readFromFile('./db/tips.json').then((data) => res.json(JSON.parse(data)));
 });
 
-// GET Route for a specific tip
+
 tips.get('/:tip_id', (req, res) => {
   const tipId = req.params.tip_id;
   readFromFile('./db/tips.json')
@@ -24,24 +24,19 @@ tips.get('/:tip_id', (req, res) => {
     });
 });
 
-// DELETE Route for a specific tip
+
 tips.delete('/:tip_id', (req, res) => {
   const tipId = req.params.tip_id;
   readFromFile('./db/tips.json')
     .then((data) => JSON.parse(data))
     .then((json) => {
-      // Make a new array of all tips except the one with the ID provided in the URL
       const result = json.filter((tip) => tip.tip_id !== tipId);
-
-      // Save that array to the filesystem
       writeToFile('./db/tips.json', result);
-
-      // Respond to the DELETE request
       res.json(`Item ${tipId} has been deleted 🗑️`);
     });
 });
 
-// POST Route for a new UX/UI tip
+
 tips.post('/', (req, res) => {
   console.log(req.body);
 
